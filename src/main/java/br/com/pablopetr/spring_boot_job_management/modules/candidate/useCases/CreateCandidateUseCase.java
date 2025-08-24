@@ -12,12 +12,13 @@ public class CreateCandidateUseCase {
     private CandidateRepository candidateRepository;
 
     public CandidateEntity execute(CandidateEntity candidateEntity) {
-        if (candidateRepository.existsByUsername(candidateEntity.getUsername())) {
+        if(
+                candidateRepository.existsByUsername(candidateEntity.getUsername()) ||
+                candidateRepository.existsByEmail(candidateEntity.getEmail())
+        ) {
             throw new UserAlreadyExists();
         }
-        if (candidateRepository.existsByEmail(candidateEntity.getEmail())) {
-            throw new UserAlreadyExists();
-        }
+
         return candidateRepository.save(candidateEntity);
     }
 }
