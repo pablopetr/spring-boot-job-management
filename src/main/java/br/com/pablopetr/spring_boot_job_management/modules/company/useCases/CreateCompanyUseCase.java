@@ -11,7 +11,7 @@ public class CreateCompanyUseCase {
     @Autowired
     private CompanyRepository companyRepository;
 
-    private void execute(CompanyEntity companyEntity) {
+    public CompanyEntity execute(CompanyEntity companyEntity) {
         if(
                 companyRepository.existsByUsername(companyEntity.getUsername()) ||
                 companyRepository.existsByEmail(companyEntity.getEmail())
@@ -19,6 +19,6 @@ public class CreateCompanyUseCase {
             throw new CompanyAlreadyExists();
         }
 
-        this.companyRepository.save(companyEntity);
+        return this.companyRepository.save(companyEntity);
     }
 }

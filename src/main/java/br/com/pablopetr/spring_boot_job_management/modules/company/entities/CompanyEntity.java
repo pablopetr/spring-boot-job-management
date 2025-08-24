@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDateTime;
@@ -28,8 +29,8 @@ public class CompanyEntity {
     @NotBlank
     private String email;
 
-    @NotBlank
-    @Email(message = "Email should be valid")
+    @NotBlank(message = "Password must not be blank")
+    @Length(min = 6, message = "Password should have at least 6 characters")
     private String password;
 
     @NotBlank
