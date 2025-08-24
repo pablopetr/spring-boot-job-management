@@ -1,6 +1,5 @@
 package br.com.pablopetr.spring_boot_job_management.modules.candidate;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
