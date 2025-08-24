@@ -27,8 +27,11 @@ public class JobEntity {
     private String level; // evite 'public' aqui
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "company_id", nullable = false)
+    @JoinColumn(name = "company_id", insertable = false, updatable = false)
     private CompanyEntity company;
+
+    @Column(name = "company_id")
+    private UUID companyId;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
