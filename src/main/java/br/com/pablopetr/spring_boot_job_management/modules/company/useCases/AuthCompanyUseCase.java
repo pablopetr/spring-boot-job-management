@@ -1,6 +1,7 @@
 package br.com.pablopetr.spring_boot_job_management.modules.company.useCases;
 
 import br.com.pablopetr.spring_boot_job_management.exceptions.UsernameOrPasswordIncorrect;
+import br.com.pablopetr.spring_boot_job_management.modules.candidate.dto.AuthCompanyResponseDTO;
 import br.com.pablopetr.spring_boot_job_management.modules.company.dto.AuthCompanyDTO;
 import br.com.pablopetr.spring_boot_job_management.modules.company.repositories.CompanyRepository;
 import com.auth0.jwt.JWT;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
 
 @Service
 public class AuthCompanyUseCase {
@@ -24,7 +26,7 @@ public class AuthCompanyUseCase {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public String execute(AuthCompanyDTO authCompanyDTO) {
+    public AuthCompanyResponseDTO execute(AuthCompanyDTO authCompanyDTO) {
         var company = companyRepository.findByUsername(authCompanyDTO.getUsername())
                 .orElseThrow(UsernameOrPasswordIncorrect::new);
 
@@ -36,9 +38,18 @@ public class AuthCompanyUseCase {
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
 
-        return JWT.create().withIssuer("job-management")
+        var expiresIn = Instant.now().plus(Duration.ofHours(2));
+
+        var token = JWT.create().withIssuer("job-management")
                 .withExpiresAt(Instant.now().plus(Duration.ofHours(2)))
                 .withSubject(company.getId().toString())
+                .withClaim("roles", Arrays.asList("COMPANY"))
+                .withExpiresAt(expiresIn)
                 .sign(algorithm);
+
+        return AuthCompanyResponseDTO.builder()
+                .access_token(token)
+                .expires_in(expiresIn.toEpochMilli())
+                .build();
     }
 }
