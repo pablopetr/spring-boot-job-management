@@ -1,6 +1,7 @@
 package br.com.pablopetr.spring_boot_job_management.modules.candidate.controllers;
 
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.CandidateEntity;
+import br.com.pablopetr.spring_boot_job_management.modules.candidate.dto.CandidateProfileResponseDTO;
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.useCases.CreateCandidateUseCase;
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.useCases.ProfileCandidateUseCase;
@@ -47,6 +48,15 @@ public class CandidateController {
     }
 
     @GetMapping("")
+    @Tag(name = "Candidate", description = "Endpoints for Candidate")
+    @Operation(summary = "Candidate profile", description = "Show candidate profile information")
+    @SecurityRequirement(name = "jwt_auth")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = CandidateProfileResponseDTO.class))
+        }),
+        @ApiResponse(responseCode = "400")
+    })
     public ResponseEntity<Object> get(HttpServletRequest request) {
         var candidateId = request.getAttribute("candidate_id");
 
