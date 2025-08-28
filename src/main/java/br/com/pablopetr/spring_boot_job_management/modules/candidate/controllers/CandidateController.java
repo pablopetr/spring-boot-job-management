@@ -2,7 +2,16 @@ package br.com.pablopetr.spring_boot_job_management.modules.candidate.controller
 
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.CandidateEntity;
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.useCases.CreateCandidateUseCase;
+import br.com.pablopetr.spring_boot_job_management.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.useCases.ProfileCandidateUseCase;
+import br.com.pablopetr.spring_boot_job_management.modules.company.entities.JobEntity;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +29,9 @@ public class CandidateController {
 
     @Autowired
     private ProfileCandidateUseCase profileCandidateUseCase;
+
+    @Autowired
+    private ListAllJobsByFilterUseCase listAllJobsByFilterUseCase;
 
     @PostMapping("/")
     @PreAuthorize("hasRole('CANDIDATE')")
@@ -44,5 +56,20 @@ public class CandidateController {
         } catch (Exception exception) {
             return ResponseEntity.badRequest().body(exception.getMessage());
         }
+    }
+
+    @GetMapping("/job")
+    @PreAuthorize("hasRole('CANDIDATE')")
+    @Tag(name = "Candidate", description = "Endpoints for Candidate")
+    @Operation(summary = "List all available jobs by filter", description = "List all available jobs by filter")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", content = {
+            @Content(array = @ArraySchema(schema = @Schema(implementation = JobEntity.class)))
+        })
+    })
+    public ResponseEntity<Object> findJobByFilter(@RequestParam String filter) {
+        var jobs = this.listAllJobsByFilterUseCase.execute(filter);
+
+        return ResponseEntity.ok().body(jobs);
     }
 }

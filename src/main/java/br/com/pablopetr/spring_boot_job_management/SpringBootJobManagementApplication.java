@@ -6,13 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@OpenAPIDefinition(
-        info = @Info(
-                title = "Job Management API",
-                version = "1.0",
-                description = "API for managing job postings and applications"
-        )
-)
+@OpenAPIDefinition(info = @Info(title = "Gestão de Vagas", description = "API responsável pela gestão de vagas", version = "1"))
 public class SpringBootJobManagementApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootJobManagementApplication.class, args);
