@@ -25,6 +25,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/candidate")
+@Tag(name = "Candidate", description = "Endpoints for Candidate")
 public class CandidateController {
     @Autowired
     private CreateCandidateUseCase createCandidateUseCase;
@@ -35,8 +36,14 @@ public class CandidateController {
     @Autowired
     private ListAllJobsByFilterUseCase listAllJobsByFilterUseCase;
 
-    @PostMapping("/")
-    @PreAuthorize("hasRole('CANDIDATE')")
+    @PostMapping("")
+    @Operation(summary = "Create a candidate", description = "Endpoint to create a new candidate")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = CandidateEntity.class))
+        }),
+        @ApiResponse(responseCode = "400")
+    })
     public ResponseEntity<Object> create(@Valid @RequestBody CandidateEntity candidateEntity) {
         try {
             var result = this.createCandidateUseCase.execute(candidateEntity);
@@ -48,7 +55,6 @@ public class CandidateController {
     }
 
     @GetMapping("")
-    @Tag(name = "Candidate", description = "Endpoints for Candidate")
     @Operation(summary = "Candidate profile", description = "Show candidate profile information")
     @SecurityRequirement(name = "jwt_auth")
     @ApiResponses({
@@ -57,6 +63,7 @@ public class CandidateController {
         }),
         @ApiResponse(responseCode = "400")
     })
+    @PreAuthorize("hasRole('CANDIDATE')")
     public ResponseEntity<Object> get(HttpServletRequest request) {
         var candidateId = request.getAttribute("candidate_id");
 
@@ -71,7 +78,6 @@ public class CandidateController {
 
     @GetMapping("/job")
     @PreAuthorize("hasRole('CANDIDATE')")
-    @Tag(name = "Candidate", description = "Endpoints for Candidate")
     @Operation(summary = "List all available jobs by filter", description = "List all available jobs by filter")
     @ApiResponses({
         @ApiResponse(responseCode = "200", content = {
