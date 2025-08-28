@@ -1,5 +1,6 @@
 package br.com.pablopetr.spring_boot_job_management.modules.company.entities;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -24,13 +25,16 @@ public class JobEntity {
     private UUID id;
 
     @NotBlank
+    @Schema(example = "Software Engineer")
     private String description;
 
     @NotBlank
+    @Schema(example = "Develop and maintain software applications.")
     private String benefits;
 
     @NotBlank
-    private String level; // evite 'public' aqui
+    @Schema(example = "Mid-Level")
+    private String level;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "company_id", insertable = false, updatable = false)
