@@ -1,7 +1,8 @@
 package br.com.pablopetr.spring_boot_job_management.modules.candidate.controllers;
 
-import br.com.pablopetr.spring_boot_job_management.modules.candidate.CandidateEntity;
+import br.com.pablopetr.spring_boot_job_management.modules.candidate.entities.CandidateEntity;
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.dto.CandidateProfileResponseDTO;
+import br.com.pablopetr.spring_boot_job_management.modules.candidate.useCases.ApplyJobCandidateUseCase;
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.useCases.CreateCandidateUseCase;
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.useCases.ProfileCandidateUseCase;
@@ -35,6 +36,9 @@ public class CandidateController {
 
     @Autowired
     private ListAllJobsByFilterUseCase listAllJobsByFilterUseCase;
+
+    @Autowired
+    private ApplyJobCandidateUseCase applyJobCandidateUseCase;
 
     @PostMapping("")
     @Operation(summary = "Create a candidate", description = "Endpoint to create a new candidate")
@@ -89,5 +93,22 @@ public class CandidateController {
         var jobs = this.listAllJobsByFilterUseCase.execute(filter);
 
         return ResponseEntity.ok().body(jobs);
+    }
+
+
+    @PostMapping("job/apply")
+    @PreAuthorize("hasRole('CANDIDATE')")
+    @Operation(summary = "Apply for a job", description = "Apply for a job by passing the job ID")
+    @SecurityRequirement(name = "jwt_auth")
+    public ResponseEntity<Object> applyJob(HttpServletRequest request, @RequestBody UUID jobId) {
+        var candidateId = request.getAttribute("candidate_id");
+
+        try {
+            var result = this.applyJobCandidateUseCase.execute(UUID.fromString(candidateId.toString()), jobId);
+
+            return ResponseEntity.ok().body(result);
+        } catch (Exception exception) {
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
     }
 }

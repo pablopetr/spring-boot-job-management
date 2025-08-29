@@ -1,6 +1,5 @@
 package br.com.pablopetr.spring_boot_job_management.modules.candidate.useCases;
 
-import br.com.pablopetr.spring_boot_job_management.modules.candidate.CandidateEntity;
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.CandidateRepository;
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.dto.CandidateProfileResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;

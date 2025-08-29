@@ -1,4 +1,4 @@
-package br.com.pablopetr.spring_boot_job_management.modules.candidate;
+package br.com.pablopetr.spring_boot_job_management.modules.candidate.entities;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;

@@ -1,5 +1,6 @@
 package br.com.pablopetr.spring_boot_job_management.modules.candidate;
 
+import br.com.pablopetr.spring_boot_job_management.modules.candidate.entities.CandidateEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

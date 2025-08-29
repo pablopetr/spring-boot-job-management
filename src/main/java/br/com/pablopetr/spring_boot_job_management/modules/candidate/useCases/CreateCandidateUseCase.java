@@ -1,7 +1,7 @@
 package br.com.pablopetr.spring_boot_job_management.modules.candidate.useCases;
 
 import br.com.pablopetr.spring_boot_job_management.exceptions.UserAlreadyExists;
-import br.com.pablopetr.spring_boot_job_management.modules.candidate.CandidateEntity;
+import br.com.pablopetr.spring_boot_job_management.modules.candidate.entities.CandidateEntity;
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
