@@ -22,6 +22,7 @@ public class JobEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private UUID id;
 
     @NotBlank
@@ -44,5 +45,6 @@ public class JobEntity {
     private UUID companyId;
 
     @CreationTimestamp
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private LocalDateTime createdAt;
 }

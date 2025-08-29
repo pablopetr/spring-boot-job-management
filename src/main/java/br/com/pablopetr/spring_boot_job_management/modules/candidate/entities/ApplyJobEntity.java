@@ -1,6 +1,7 @@
 package br.com.pablopetr.spring_boot_job_management.modules.candidate.entities;
 
 import br.com.pablopetr.spring_boot_job_management.modules.company.entities.JobEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ public class ApplyJobEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private UUID id;
 
     @ManyToOne
@@ -33,5 +35,6 @@ public class ApplyJobEntity {
     private UUID jobId;
 
     @CreationTimestamp
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private LocalTime createdAt;
 }
