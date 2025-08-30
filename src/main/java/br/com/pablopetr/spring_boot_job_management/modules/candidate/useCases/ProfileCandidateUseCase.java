@@ -1,5 +1,6 @@
 package br.com.pablopetr.spring_boot_job_management.modules.candidate.useCases;
 
+import br.com.pablopetr.spring_boot_job_management.exceptions.UserNotFoundException;
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.CandidateRepository;
 import br.com.pablopetr.spring_boot_job_management.modules.candidate.dto.CandidateProfileResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,7 @@ public class ProfileCandidateUseCase {
 
     public CandidateProfileResponseDTO execute(UUID candidateId) {
         var candidate = this.candidateRepository.findById(candidateId)
-                .orElseThrow(() -> {
-                    throw new UsernameNotFoundException("User not found");
-                });
+                .orElseThrow(UserNotFoundException::new);
 
         var candidateDTO = CandidateProfileResponseDTO.builder()
                 .id(candidate.getId())
