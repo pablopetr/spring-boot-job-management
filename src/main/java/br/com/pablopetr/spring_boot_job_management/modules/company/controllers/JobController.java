@@ -1,5 +1,6 @@
 package br.com.pablopetr.spring_boot_job_management.modules.company.controllers;
 
+import br.com.pablopetr.spring_boot_job_management.exceptions.CompanyNotFound;
 import br.com.pablopetr.spring_boot_job_management.modules.company.dto.CreateJobDTO;
 import br.com.pablopetr.spring_boot_job_management.modules.company.entities.JobEntity;
 import br.com.pablopetr.spring_boot_job_management.modules.company.useCases.CreateJobUseCase;
