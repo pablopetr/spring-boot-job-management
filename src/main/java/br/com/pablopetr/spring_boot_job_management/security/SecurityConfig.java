@@ -21,17 +21,18 @@ public class SecurityConfig {
     @Autowired
     private SecurityCandidateFilter securityCandidateFilter;
 
-    private static final String[] SWAGGER_LIST = {
+    private static final String[] ALLOWED_ROUTES = {
             "/swagger-ui/**",
             "/v3/api-docs",
             "/v3/api-docs/**",
             "/swagger-resources/**",
-            "/error"
+            "/error",
+            "/actuator/**"
     };
 
     @Bean
     WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers(SWAGGER_LIST);
+        return web -> web.ignoring().requestMatchers(ALLOWED_ROUTES);
     }
 
     @Bean
@@ -42,7 +43,7 @@ public class SecurityConfig {
                         .requestMatchers("/company").permitAll()
                         .requestMatchers("/company/auth").permitAll()
                         .requestMatchers("/candidate/auth").permitAll()
-                        .requestMatchers(SWAGGER_LIST).permitAll();
+                        .requestMatchers(ALLOWED_ROUTES).permitAll();
 
                     auth.anyRequest().authenticated();
                 })
